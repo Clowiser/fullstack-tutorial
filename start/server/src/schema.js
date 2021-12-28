@@ -18,7 +18,7 @@ const typeDefs = gql`
         LARGE
     }
     
-    type Rocket {
+    type Rocket { 
         id: ID!
         name: String
         type: String
@@ -50,4 +50,5 @@ const typeDefs = gql`
     }
 `;
 
+//le type Query a toris type de champs launches, launch et me
 module.exports = typeDefs;

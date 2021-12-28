@@ -14,7 +14,10 @@ class UserAPI extends DataSource {
    * here, so we can know about the user making requests
    */
   initialize(config) {
+    // -> pour passer de soptions de configurations à la sous-classe (DataSource)
     this.context = config.context;
+    // -> Le contexte d'une API graphique est un objet partagé entre tous les résolveurs d'une requête GraphQL.
+    // -> c'est que le contexte est utile pour stocker et partager les informations des utilisateurs.
   }
 
   /**
@@ -23,6 +26,7 @@ class UserAPI extends DataSource {
    * instead
    */
   async findOrCreateUser({ email: emailArg } = {}) {
+    // méthode qui recherche ou créer un utilisateur avec un e-mail donné dans la BDD
     const email =
       this.context && this.context.user ? this.context.user.email : emailArg;
     if (!email || !isEmail.validate(email)) return null;
@@ -32,6 +36,7 @@ class UserAPI extends DataSource {
   }
 
   async bookTrips({ launchIds }) {
+    // méthode de réservation de voyage avec un tableau de launchID pour le user connecté (userId)
     const userId = this.context.user.id;
     if (!userId) return;
 
@@ -54,13 +59,16 @@ class UserAPI extends DataSource {
     });
     return res && res.length ? res[0].get() : false;
   }
+  // A REVOIR
 
   async cancelTrip({ launchId }) {
+    // M d'annulation de lancement pour le user connecté (userId) avec un launchID
     const userId = this.context.user.id;
     return !!this.store.trips.destroy({ where: { userId, launchId } });
   }
 
   async getLaunchIdsByUser() {
+    // M qui renvoie tous les voyages réservés pour le user connecté (userId)
     const userId = this.context.user.id;
     const found = await this.store.trips.findAll({
       where: { userId },
@@ -71,7 +79,8 @@ class UserAPI extends DataSource {
   }
 
   async isBookedOnLaunch({ launchId }) {
-    if (!this.context || !this.context.user) return false;
+    // M qui détermine si le user connecté (userId) a réservé un voyage sur un lancement particulier
+    if (!this.context || !this.context.user) return false; // si différent des infos stockées et partagées du lancement OU différent des infos stockées et partagées du user -> return false
     const userId = this.context.user.id;
     const found = await this.store.trips.findAll({
       where: { userId, launchId },
