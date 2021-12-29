@@ -13,7 +13,7 @@ class LaunchAPI extends RESTDataSource {
     }
 
     async getAllLaunches() {
-        //Une fonction asynchrone est une fonction qui s'exécute de façon asynchrone grâce à la boucle d'évènement en utilisant une promesse (Promise) comme valeur de retour.
+        //Une fonction asynchrone est une fonction qui s'exécute de façon asynchrone (regarde tout avant de traiter la première) grâce à la boucle d'évènement en utilisant une promesse (Promise) comme valeur de retour.
         const response = await this.get('launches');
         return Array.isArray(response)
             ? response.map(launch => this.launchReducer(launch))
@@ -21,7 +21,7 @@ class LaunchAPI extends RESTDataSource {
     }
 
     launchReducer(launch) {
-        // méthode launchReducer qui a pour paramètre launch -> trasnforme les données de lancement de l'API REST en ce schéma
+        // méthode launchReducer qui a pour paramètre launch -> transforme les données de lancement de l'API REST en ce schéma
         return {
             id: launch.flight_number || 0,
             cursor: `${launch.launch_date_unix}`,
@@ -39,17 +39,17 @@ class LaunchAPI extends RESTDataSource {
         };
     }
 
-    async getLaunchByID({ launchID }) {
+    async getLaunchById({ launchId }) {
         //méthode par un id -> un numéro de vol de lancement et renvoir les données associées à ce lancement
-        const response = await this.get ('launches', { flight_number: launchID})
+        const response = await this.get ('launches', { flight_number: launchId})
         return this.launchReducer(response[0]);
     }
 
-    async getLaunchByIDs({launchIDs}) {
+    async getLaunchByIds({launchIds}) {
         // méthode par plusieurs id
         return Promise.all(
             //Promise.all renvoie une promesse qui est résolue quand l'ensemble des promesses qui sont dans l'itérable passé en argument ont été résolu / ou qui échoue avec la raison de la première promesse qui échoue au sein de l'itérable
-            launchIDs.map(launchId => this.getLaunchByID( {launchID} )),
+            launchIDs.map(launchId => this.getLaunchById( {launchId} )),
         );
 
     }

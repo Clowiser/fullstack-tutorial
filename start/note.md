@@ -20,13 +20,14 @@ La structure de votre schéma doit prendre en charge les actions que vos clients
 * Annuler un lancement précédemment réservé pour un utilisateur connecté
 
 
-###1 - Schema.js
+###1 - Schema
+// schema.js
 * L'objet type Launch a une collection de champs + chaque champs à son propre type (type objet ou type scalaire)
 
--> PatchSize : Lorsque vous recherchez un champ qui prend un argument, la valeur du champ peut varier en fonction de la valeur de l'argument fourni.
-Dans ce cas, la valeur que vous fournissez edéterminera quelle taille du patch associé à la mission est renvoyée (la taille SMALL ou la taille LARGE).
+= PatchSize : Lorsque vous recherchez un champ qui prend un argument, la valeur du champ peut varier en fonction de la valeur de l'argument fourni.
+Dans ce cas, la valeur que vous fournissez déterminera quelle taille du patch associé à la mission est renvoyée (la taille SMALL ou la taille LARGE).
 
--> type Query : pour permettre aux clients de récupérer ces objets -> on définit des requêtes qu'ils peuvent exécuter sur le graphique
+ = type Query : pour permettre aux clients de récupérer ces objets -> on définit des requêtes qu'ils peuvent exécuter sur le graphique
 - launches : requête pour avoir un tableau de tous les launchs
 - launch : requête pour avoir un seul launch par ID
 - me : requête qui renverra les détails de l'utilisateur actuellement connecté
@@ -37,33 +38,35 @@ Les query permettent aux clients de récupérer des données mais pas de les mod
 - canceltrip : // cxl
 - login : // de se connecter en fournissant son adresse e-mail
 
--> ces 3 mutations renvoient le m type d'objet : TripUpdateResponse! (qui ne peut ajamais être nulle)
+-> ces 3 mutations renvoient le m type d'objet : TripUpdateResponse! (qui ne peut jamais être nulle)
 
-###2 - launch.js 
+###2 - Connecter une BDD
+// launch.js
+
 La classe RESTDatasource du package est une extension de DataSource qui gère la récupération de données à partir d'une API REST.
 Pour utiliser cette classe = extend et lui fournir URL de l'API REST avec laquelle elle communiquera
 
 Notre launchAPI a besoin de méthodes pour les requêtes :
 - méthode pour obtenir la liste de tous les launches -> getAllLaunches()
-- methode qui transforme les données de lancement envoé dans le format attendu par notre schéma -> launchReducer()
+- methode qui transforme les données de lancement envoyé dans le format attendu par notre schéma -> launchReducer()
 - méthode pour obtenir un lancement par son id -> getLaunchByID()
 
 Promise.all() : renvoie une promesse (est un objet qui représente l’état d’une opération asynchrone - avec les 3 états (en cours, résolue avec succès, résolue mais stoppé après un échec))
 -> qui est résolue lorsque l'ensemble des promesses contenues dans l'itérable passé en argument ont été résolues ou qui échoue avec la raison de la première promesse qui échoue au sein de l'itérable.
 
-
-###3 - connecter une BDD 
--> l'API SpaceX est en lecture seule ; nous avons aussi besoin d'une source de données accessibles en écriture afin de stocker les données d'application (identités des utilisateurs, réservations de sièges)
+= l'API SpaceX est en lecture seule ; nous avons aussi besoin d'une source de données accessibles en écriture afin de stocker les données d'application (identités des utilisateurs, réservations de sièges)
 BDD objet -> ORM : Un mapping objet-relationnel (en anglais object-relational mapping ou ORM) est un type de programme informatique qui se place en interface entre un programme applicatif et une base de données relationnelle (table) pour simuler une base de données orientée objet.
 
--> Si vous utilisez this.contextdans une source de données, il est essentiel de créer une nouvelle instance de cette source de données dans la dataSourcesfonction, plutôt que de partager une seule instance. Sinon, initializepourrait être appelé lors de l'exécution de code asynchrone pour un utilisateur particulier, en remplaçant this.contextpar le contexte d' un autre utilisateur.
-//Pas compris
+= Si vous utilisez this.context dans une source de données, il est essentiel de créer une nouvelle instance de cette source de données dans la fonction dataSources, plutôt que de partager une seule instance. Sinon, initialize pourrait être appelé lors de l'exécution de code asynchrone pour un utilisateur particulier, en remplaçant this.context par le contexte d' un autre utilisateur.
+\\ à revoir
 
--> maintenant, nous avons connecté notre source de données à Apollo Server
+TUTO = maintenant, nous avons connecté notre source de données à Apollo Server
+- Pour la connexion : user.js et launch.js avec const { DataSource } = require('apollo-datasource'); ou const avec la DataSourceRest ; 
 
-###4 - Requête
+###3 - Résolveurs
+//resolvers.js
 Nous avons conçu le schéma (schema.js) et configuré nos sources de données (dossier datasources ; launch.js et user.js)
--> MAIS le serveur ne sait pas comment utiliser ses sources de donners pour remplir les champs de schéma => les résolveurs
+-> MAIS le serveur ne sait pas comment utiliser ses sources de donners pour remplir les champs de schéma => on utilise donc les résolveurs
 
 ####Un résolveur est une fonction chargée de renseigner les données d'un seul champ de votre schéma. 
 
@@ -75,6 +78,23 @@ Dans ce tutoriel, le résolveur définit utilisera principalement context -> il 
 
 1 - le résolveur d'un champ parent s'exécute toujours avant les résolveurs des enfants de ce champ. 
 Par conséquent, commençons par définir des résolveurs pour certains champs de niveau supérieur : les champs du type Query.
+
+TUTO = maintenant, nous avons quelques résolveurs (//resolvers.js), il faut les ajouter à nos serveur. 
+
+= Apollo Server définit un résolveur par défaut pout tout champ pour lequel on ne définit pas de résolveur personnalisé.
+Pour la plupart (pas tous) des champs de notre schéma (schema.js), un r par def fait exactement ce que nous voulons qu'il fasse
+
+Dans notre exo, le r de missionPatcb doit renvoyer une val différente selon qu'une requête spécifie LARGE ou SMALL pour l'argument size
+
+####Paginer les résultats
+Query.launches renvoi une longue liste d'objet launch = c'est beaucoup plus que le client n'en a besoin à la fois. 
+De plus, la récupération d'autant de données peut être lente.
+= Pour améliorer les performances de ce champs, nous pouvons implémenter la pagination.
+- cela garantit que notre serveur envoie les données en petits morceaux.
+- Recommandation de la pagination basée sur le curseur pour les pages numérotées car élément la possibilité de sauter un élément ou d'afficher le même élément plusieurs fois.
+Dans la PBSC, un pointeur constant (ou curseur) est utilisé pour savoir ou commencer dans l'ensemble des données lors de la récup du prochain ensemble de résultat.
+
+TUTO = nous allons config la PBSC.
 
 ###Rappel :
 .map() : créer un nouveau tableau avec les résultats de l'appel d'une fonction

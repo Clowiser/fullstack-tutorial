@@ -50,5 +50,5 @@ const typeDefs = gql`
     }
 `;
 
-//le type Query a toris type de champs launches, launch et me
+//le type Query a trois type de champs launches, launch et me
 module.exports = typeDefs;

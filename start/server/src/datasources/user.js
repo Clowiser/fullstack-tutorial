@@ -14,7 +14,7 @@ class UserAPI extends DataSource {
    * here, so we can know about the user making requests
    */
   initialize(config) {
-    // -> pour passer de soptions de configurations à la sous-classe (DataSource)
+    // -> pour passer des options de configurations à la sous-classe (DataSource)
     this.context = config.context;
     // -> Le contexte d'une API graphique est un objet partagé entre tous les résolveurs d'une requête GraphQL.
     // -> c'est que le contexte est utile pour stocker et partager les informations des utilisateurs.

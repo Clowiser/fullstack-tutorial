@@ -4,7 +4,7 @@ import {
     //ApolloClient,
     //NormalizedCacheObject,
    // ApolloProvider,
-    gql,
+    //gql,
     //useQuery
 } from '@apollo/client';
 
@@ -13,12 +13,12 @@ import {
 //import injectStyles from './styles';
 //import { cache } from './cache';
 
-export const typeDefs = gql`
+/*export const typeDefs = gql`
     extend type Query {
         isLoggedIn: Boolean!
         cartItems: [ID!]!
     }
-`;
+`;*/
 
 console.log("test - côté client");
 
