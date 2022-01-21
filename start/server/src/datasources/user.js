@@ -20,11 +20,6 @@ class UserAPI extends DataSource {
     // -> c'est que le contexte est utile pour stocker et partager les informations des utilisateurs.
   }
 
-  /**
-   * User can be called with an argument that includes email, but it doesn't
-   * have to be. If the user is already on the context, it will use that user
-   * instead
-   */
   async findOrCreateUser({ email: emailArg } = {}) {
     // méthode qui recherche ou créer un utilisateur avec un e-mail donné dans la BDD
     const email =

@@ -65,6 +65,7 @@ TUTO = maintenant, nous avons connecté notre source de données à Apollo Serve
 
 ###3 - Résolveurs
 //resolvers.js
+
 Nous avons conçu le schéma (schema.js) et configuré nos sources de données (dossier datasources ; launch.js et user.js)
 -> MAIS le serveur ne sait pas comment utiliser ses sources de donners pour remplir les champs de schéma => on utilise donc les résolveurs
 
@@ -96,6 +97,25 @@ Dans la PBSC, un pointeur constant (ou curseur) est utilisé pour savoir ou comm
 
 TUTO = nous allons config la PBSC.
 
+- Changement du type Query avec deux paramètres pageSize et after et objet LaunchConnection (avec cursor, hasMore et laucnhes)
+
+### 4 - les mutations
+Après les résolveurs, écrivons les mutations - le processus est presque identique
+
+resolvers.js
+après ajout du resolvers mutation, nous devons ajouter une logique à notre serveur pour effectuer réellement l'authetification
+ 
+Ex - essayons de réserver un voyage :
+seul les users identifiés peuvent réserver un voyage donc avec une authorization
+
+=> cette manière de faire est utile pour tester les API mais pour l'effectuer normalemet, il nécessite plus d'outils
+
+### 5 - Connexion à Apollo Studio
+- A présent, nous avons un serveur GraphQL en cours qui interagit avec des données provenant de plus sources (API)
+il faut, avant de passer au côté client, activez Apollo Studio
+
+Apollo Studio est une plate-forme cloud qui vous aide à chaque phase du développement de GraphQL, du prototypage au déploiement en passant par la surveillance.
+
 ###Rappel :
 .map() : créer un nouveau tableau avec les résultats de l'appel d'une fonction
 .then() : renvoie un objet promise (peut prendre jusqu'à 2 arguments qui sont deux fonctions callback) ; à utiliser en cas de complétion ou d'échec de la Promise.
@@ -103,3 +123,4 @@ TUTO = nous allons config la PBSC.
 ###Note :
 - type scalaire -> primitif (ID, String, Boolean, Int, Float)
 - Un point d'exclamation (!) après le type d'un champ déclaré signifie que « la valeur de ce champ ne peut jamais être nulle ».
+- await permet d'attendre la résolution d'une promesse. ne peut être utilisé qu'au sein d'une fonction asyncrhone

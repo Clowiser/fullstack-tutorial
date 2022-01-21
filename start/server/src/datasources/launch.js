@@ -49,7 +49,7 @@ class LaunchAPI extends RESTDataSource {
         // méthode par plusieurs id
         return Promise.all(
             //Promise.all renvoie une promesse qui est résolue quand l'ensemble des promesses qui sont dans l'itérable passé en argument ont été résolu / ou qui échoue avec la raison de la première promesse qui échoue au sein de l'itérable
-            launchIDs.map(launchId => this.getLaunchById( {launchId} )),
+            launchIds.map(launchId => this.getLaunchById( {launchId} )),
         );
 
     }
