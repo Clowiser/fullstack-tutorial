@@ -1,6 +1,6 @@
-//un resolveur est une fonction chargé de remplir les données d'un champs unique du schéma (ex : schéma avec pomme : nom, type, prix - le r remplit un seul champ, celui spécifié)
+//un resolveur est une fonction chargée de remplir les données d'un champ unique du schéma (ex : schéma avec pomme : nom, type, prix - le r remplit un seul champ, celui spécifié)
 
-const { paginateResults} = require('./utils');
+const { paginateResults } = require('./utils');
 //import de la fonction paginateResults
 //la paginate, si elle est définit, nous donne le nombre de résultat souhaité dans une même page
 

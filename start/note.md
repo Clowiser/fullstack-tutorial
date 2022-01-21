@@ -126,8 +126,24 @@ Mise en place de variable d'environnement côté client
 
 = nous sommes prêt à créer des composants React qui exécutent des requêtes GraphQL
 
+#### 6a - launches.tsx
 
+Détails de pagination :
+Notez qu'en plus de récupérer une liste de launches, notre requête récupère hasMore et cursordes champs. 
+En effet, la requête launches renvoie des résultats paginés :
 
+- Le champ hasMore indique s'il existe des lancements supplémentaires au-delà de la liste renvoyée par le serveur.
+- Le champ cursor indique la position actuelle du client dans la liste des lancements. Nous pouvons exécuter à nouveau la requête et fournir notre plus récent cursorcomme valeur de la $aftervariable pour récupérer le prochain ensemble de lancements dans la liste.
+
+#### 6b - useQuery 
+useQuery React Hook d'Apollo Client pour exécuter notre nouvelle requête dans le Launchescomposant. L'objet de résultat du hook fournit des propriétés qui nous aident à remplir et à afficher notre composant tout au long de l'exécution de la requête.
+
+#### 6c - retour sur la pagination
+
+AP fournit une fonction fetchMore d'assistance pour aider les requêtes paginées : il permet d'exécuter la même requête avec des valeurs différentes pour les variables
+
+### 7 - afficher les détails d'un seul lancement
+launch.tsx
 
 ###Rappel :
 .map() : créer un nouveau tableau avec les résultats de l'appel d'une fonction
@@ -137,3 +153,5 @@ Mise en place de variable d'environnement côté client
 - type scalaire -> primitif (ID, String, Boolean, Int, Float)
 - Un point d'exclamation (!) après le type d'un champ déclaré signifie que « la valeur de ce champ ne peut jamais être nulle ».
 - await permet d'attendre la résolution d'une promesse. ne peut être utilisé qu'au sein d'une fonction asyncrhone
+- les ... (spread truc/syntaxe de propagation) font une copie indépendante de la celle qui a été copié
+- un fragement est utile pour déinifir un ensemble de champs que l'on peut inclure dans plusieurs requêtes sans les réécrires
