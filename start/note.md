@@ -115,7 +115,7 @@ seul les users identifiés peuvent réserver un voyage donc avec une authorizati
 il faut, avant de passer au côté client, activez Apollo Studio
 
 Apollo Studio est une plate-forme cloud qui vous aide à chaque phase du développement de GraphQL, du prototypage au déploiement en passant par la surveillance.
-
+ 
 Dans AS, chaque graphique à un schéma GraphQL correspondant.
 
 CONNEXION OK avec mise en place des variables d'environnement côté server
@@ -148,6 +148,27 @@ mise en place d'une requête d'un seul launch via le launchId & utilisation du u
 
 ### 8 - afficher le profil d'un utilisateur
 but : la page de profil d'un utilisateur affiche la liste des lancements pour lesquels il a réservé une place. 
+
+### 9 - personnalisation de a politique de récupération
+AC stocke les résultats des requêtes dans son cache = donc si l'on cherche des données déjà présentes dans notre cache,
+AC peut rencoyer ces données sans avoir à les récupérer sur le réseau. 
+Cependant les données mises en cache peuvent devenir obsolètes ! 
+- si quelques données obsolètes sont acceptables dans de nombreux cas, nous voulons
+absolument que la liste des voyages réservés de nos users soit à jour.
+= la politique de récupération pour notre requête GET_MY_TRIPS
+
+Politique de récupération définit la façon dont AC utilise le cache pour une requête précise.
+la politique par défaut est cache-first : AC vérifie le cache pour voir si le résultat est présent avant de faire une requête réseau.
+s'il y a un résultat présent (vrai ou faux ?), aucune requête réseau n'est fourni.
+
+En définissant la PdR de cette requête sur network-only, AC interroge TOUJOURS notre serveur
+pour récupérer la liste la plus récente des voyages réservés par l'user
+
+### 10 - MAJ avec les mutations
+
+
+
+
 
 ###Rappel :
 .map() : créer un nouveau tableau avec les résultats de l'appel d'une fonction
