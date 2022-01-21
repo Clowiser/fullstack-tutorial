@@ -144,6 +144,10 @@ AP fournit une fonction fetchMore d'assistance pour aider les requêtes paginée
 
 ### 7 - afficher les détails d'un seul lancement
 launch.tsx
+mise en place d'une requête d'un seul launch via le launchId & utilisation du useQuery
+
+### 8 - afficher le profil d'un utilisateur
+but : la page de profil d'un utilisateur affiche la liste des lancements pour lesquels il a réservé une place. 
 
 ###Rappel :
 .map() : créer un nouveau tableau avec les résultats de l'appel d'une fonction
