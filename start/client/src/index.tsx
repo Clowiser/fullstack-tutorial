@@ -1,69 +1,92 @@
-//import React from 'react';
-//import ReactDOM from 'react-dom';
+//utilisation de REACT
+//Pour connecter Apollo Client à React, nous encapsulons notre application dans le ApolloProvider du package @apollo/client.
+// Nous passons notre instance client au ApolloProvidercomposant via le prop client.
+// AP est similaire au fournisseur de contexte de React : encapulse l'app React et place client sur le contexte = ce qui nous permet d'y accéder depuis n'importe ou dans notre arborescence de composant
+
+
 import {
-    //ApolloClient,
-    //NormalizedCacheObject,
-   // ApolloProvider,
-    //gql,
-    //useQuery
+    ApolloClient,
+    NormalizedCacheObject,
+    ApolloProvider
+} from '@apollo/client';
+import { cache } from './cache';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Pages from './pages';
+import injectStyles from './styles';
+
+// Initialize ApolloClient
+const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+    cache,
+    uri: 'http://localhost:4000/graphql',
+});
+
+injectStyles();
+
+// Pass the ApolloClient instance to the ApolloProvider component
+ReactDOM.render(
+    <ApolloProvider client={client}>
+        <Pages />
+    </ApolloProvider>,
+    document.getElementById('root')
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+//ANCIENNE VERSION
+import React from 'react';
+
+import {
+    ApolloClient,
+    NormalizedCacheObject,
+    ApolloProvider,
+    gql,
+    useQuery
 } from '@apollo/client';
 
 //import Pages from './pages';
 //import Login from './pages/login';
 //import injectStyles from './styles';
-//import { cache } from './cache';
-
-/*export const typeDefs = gql`
-    extend type Query {
-        isLoggedIn: Boolean!
-        cartItems: [ID!]!
-    }
-`;*/
+import { cache } from './cache';
 
 console.log("test - côté client");
 
-// Set up our apollo-client to point at the server we created
-// this can be local or a remote endpoint
-/*const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+// instal du apollo client
+const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     cache,
     uri: 'http://localhost:4000/graphql',
-    headers: {
-        authorization: localStorage.getItem('token') || '',
-        'client-name': 'Space Explorer [web]',
-        'client-version': '1.0.0',
-    },
-    typeDefs,
-    resolvers: {},
 });
-*/
+//uri = adresse de notre serveur
+//cache = instance de InMemoryCache, importer depuis cache.ts
 
 
-/**
- * Render our app
- * - We wrap the whole app with ApolloProvider, so any component in the app can
- *    make GraphqL requests. Our provider needs the client we created above,
- *    so we pass it as a prop
- * - We need a router, so we can navigate the app. We're using Reach router for this.
- *    The router chooses between which component to render, depending on the url path.
- *    ex: localhost:3000/login will render only the `Login` component
- */
-/*
-const IS_LOGGED_IN = gql`
-    query IsUserLoggedIn {
-        isLoggedIn @client
-    }
-`;
-
-function IsLoggedIn() {
-    const { data } = useQuery(IS_LOGGED_IN);
-    return data.isLoggedIn ? <Pages /> : <Login />;
-}
-
-injectStyles();
-ReactDOM.render(
-    <ApolloProvider client={client}>
-        <IsLoggedIn />
-    </ApolloProvider>,
-    document.getElementById('root'),
-);
+//test d'une requète client à partir du client (et non du server)
+client.query({
+    query: gql`
+        query TestFirstQuery {
+            launch(id : 56){
+                mission {
+                    name
+                }
+                rocket {
+                    name
+                }
+            }
+        }
+    `
+}).then(result => console.log(result));
+//OK Resultat dans la console
 */

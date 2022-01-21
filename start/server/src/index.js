@@ -1,3 +1,8 @@
+//ajout pour les varaibles d'environnement du serveur
+//le package dotenv prend en charge la lecture des var env à partir du fichier .env
+require('dotenv').config();
+
+
 require('dotenv').config();
 const { ApolloServer } = require('apollo-server');
 //importe la classe spécifique ApolloServer de Apollo-Server (bibliothèque)

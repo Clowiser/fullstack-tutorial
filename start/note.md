@@ -116,6 +116,19 @@ il faut, avant de passer au côté client, activez Apollo Studio
 
 Apollo Studio est une plate-forme cloud qui vous aide à chaque phase du développement de GraphQL, du prototypage au déploiement en passant par la surveillance.
 
+Dans AS, chaque graphique à un schéma GraphQL correspondant.
+
+CONNEXION OK avec mise en place des variables d'environnement côté server
+
+### 6 - Côté client
+index.tsx
+Mise en place de variable d'environnement côté client
+
+= nous sommes prêt à créer des composants React qui exécutent des requêtes GraphQL
+
+
+
+
 ###Rappel :
 .map() : créer un nouveau tableau avec les résultats de l'appel d'une fonction
 .then() : renvoie un objet promise (peut prendre jusqu'à 2 arguments qui sont deux fonctions callback) ; à utiliser en cas de complétion ou d'échec de la Promise.
