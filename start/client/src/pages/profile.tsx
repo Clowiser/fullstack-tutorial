@@ -5,7 +5,7 @@ import {LaunchTile, Header, Button, Loading} from "../components";
 import { LAUNCH_TILE_DATA } from './launches';
 import * as GetMyTripsTypes from './__generated__/GetMyTrips';
 
-//définition de la query
+//définition de la query : user
 export const GET_MY_TRIP = gql`
 query GetMyTrip {
   me {
@@ -30,6 +30,7 @@ const Profile: React.FC<ProfileProps> = () => {
   } = useQuery<GetMyTripsTypes.GetMyTrips>(
       GET_MY_TRIP,
       {fetchPolicy: "network-only"}
+      //la PdR de cette requête sur network-only, AC interroge TOUJOURS notre serveur pour récupérer la liste la plus récente des voyages réservés par l'user
   );
   if (loading) return <Loading />;
   if (error) return <p>ERROR : {error.message}</p>;

@@ -127,7 +127,6 @@ Mise en place de variable d'environnement côté client
 = nous sommes prêt à créer des composants React qui exécutent des requêtes GraphQL
 
 #### 6a - launches.tsx
-
 Détails de pagination :
 Notez qu'en plus de récupérer une liste de launches, notre requête récupère hasMore et cursordes champs. 
 En effet, la requête launches renvoie des résultats paginés :
@@ -165,10 +164,78 @@ En définissant la PdR de cette requête sur network-only, AC interroge TOUJOURS
 pour récupérer la liste la plus récente des voyages réservés par l'user
 
 ### 10 - MAJ avec les mutations
+Après avori ajouté plusieurs requêtes, ajoutons les mutations
+les mutations sont des opérations GraphQL qui peuvent modifier les données back-end (contrairement aux requêtes).
+le schema.js a 3 mutations (les booktrip, les canceltrip et les login)
 
+1 - la possibilité de se connecter 
+login.tsx
+le LOGIN_USER ressemble à une query sauf qu'à la place de query, c'est mutation
+- le useMutation s'exécute que lorsque nous le voulons (ici lors de l'envoi du formulaire)
 
+1a - conserver le jeton et l'id de son user
+Nous pouvons inclure un rappel onCompleted : cela permet d'interagir avec les données 
+de résultat de la mutation dès qu'elles sont dispos. (en exemple ici : on utilise ce rappel
+pour conserver l'id et le token)
 
+2 - Ajouter Authorization à toutes les requêtes
+Notre client (Apollo) doit founir le jeton de l'utilisateur avec chaque opération graphQL qu'il envoie à notre serveur.
+Cela permet au serveur de vérifier que l'utilisateur est autorisé à faire ce qu'il essaie de faire.
 
+Nous avons fini de définir notre loginmutation, mais nous n'affichons pas encore le formulaire 
+permettant à un utilisateur de l'exécuter. Étant donné que nous stockons le jeton 
+utilisateur localement, nous utiliserons les API d'état local du client Apollo pour 
+alimenter une partie de la logique du formulaire dans la section suivante.
+
+### 11 - gérer l'état local
+
+Comme la plupart des applications Web, notre application repose sur une combinaison de données 
+récupérées à distance et de données stockées localement.
+Nous pouvons utiliser Apollo Client pour gérer les deux types de données, ce qui en fait une 
+source unique de vérité pour l'état de notre application. 
+Nous pouvons même interagir avec les deux types de données en une seule opération.
+
+1 - définir un schéma côté client dans index.tsx
+- avec typeDefs ou nous étendons le type Query en ajoutons 2 nouveaux champs
+- en fournissant le schéma client à AC
+- 
+### 12 - initaliser les variables réactives
+Tout comme sur le serveur, nous pouvons remplir les champs de schéma côté client avec des
+données provenant de n'importe quelle source souhaitée. AC fournit des options pour cela :
+- le même cache en mémoire ou les résultats des requêtes côté serveur sont stockées
+- variables réactives, qui peuvent stocker des données arbitraires en dehors du cache 
+tout en mettant à jour les requêtes qui en dépendent.
+
+a - mettre à jour l'instruction d'import pour inclure la fonction makeVar
+- si on appelle une fonction de variable réactive avec 0 argument, elle renvoie la valeur actuelle de la var
+- si on appelle une fonction de VR avec n argument, elle remplace la valeur acutelle de la var par la valeur fournie
+export const isLoggedInVar = makeVar<boolean>(!!localStorage.getItem(('token' || '')));
+
+b - mettre à jour la logique de connexion
+Maintenant que le statut de connexion est représentée avec une var réactive, nous  devons MAJ cette var chaque fois que l'utilisateur se connecte
+login.tsx
+Nous avons maintenant notre schéma côté client et nos sources de données côté client. 
+- Côté serveur, nous définirions ensuite des résolveurs pour connecter les deux. 
+- Côté client, cependant, nous définissons plutôt des politiques de champ.
+
+### 13 - définir les politiques de terrain
+Une stratégie de champ spécifie comment un seul champ GraphQL dans le cache du client Apollo est lu et écrit. 
+La plupart des champs de schéma côté serveur n'ont pas besoin d'une stratégie de champ, car la stratégie par défaut fait ce qu'il faut:
+elle écrit les résultats de la requête directement dans le cache et renvoie ces résultats sans aucune modification.
+
+Cependant, nos champs côté client ne sont pas stockés dans le cache ! 
+Nous devons définir des politiques de champ pour indiquer au client Apollo comment interroger ces champs.
+
+### 14 - interroger les champs locaux
+on peut inclure des champs côté client dans n'importe quelle requête GraphQL = @client à ajouter à chaque champs côté client
+cela indique à Apollo de NE pas récupérer la valeur de ce champs sur notre serveur
+
+1 - statut de connexion
+index.tsx
+2 - activer la déconnexion
+
+### 15 - articles de Panier
+stocker les lancements que les utilisateurs réservent
 
 ###Rappel :
 .map() : créer un nouveau tableau avec les résultats de l'appel d'une fonction

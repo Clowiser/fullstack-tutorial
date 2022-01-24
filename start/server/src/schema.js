@@ -32,7 +32,7 @@ const typeDefs = gql`
     }
     
     type Query {
-        launches( # replace the current launches query with this one.
+        launches(
             """
             The number of results to show. Must be >= 1. Default = 20
             """

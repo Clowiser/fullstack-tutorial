@@ -38,7 +38,7 @@ export default class LoginForm extends Component<LoginFormProps, LoginFormState>
           <StyledLogo />
         </Header>
         <StyledRocket />
-        <Heading>Space Explorer</Heading>
+        <Heading>Space Explorer - Test JR</Heading>
         <StyledForm onSubmit={(e) => this.onSubmit(e)}>
           <StyledInput
             required
