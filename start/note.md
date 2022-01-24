@@ -237,6 +237,10 @@ index.tsx
 ### 15 - articles de Panier
 stocker les lancements que les utilisateurs réservent
 
+### 16 - activer la réservation de voyage
+Nous avons attendu pour intégrer cette fonctionnalité car elle nécessite d'intéragir avec les données locales (le panier et l'utilisateur) 
+et les données distantes.
+
 ###Rappel :
 .map() : créer un nouveau tableau avec les résultats de l'appel d'une fonction
 .then() : renvoie un objet promise (peut prendre jusqu'à 2 arguments qui sont deux fonctions callback) ; à utiliser en cas de complétion ou d'échec de la Promise.

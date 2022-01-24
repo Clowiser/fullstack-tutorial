@@ -56,11 +56,19 @@ class UserAPI extends DataSource {
   }
   // A REVOIR
 
-  async cancelTrip({ launchId }) {
+  /*async cancelTrip({ launchId }) {
     // M d'annulation de lancement pour le user connecté (userId) avec un launchID
     const userId = this.context.user.id;
     return !!this.store.trips.destroy({ where: { userId, launchId } });
+  }*/
+
+  async cancelTrip({ launchId }) {
+    const userId = this.context.user.id;
+    const numberOfDeletedTrips = await this.store.trips.destroy({ where: { userId, launchId:105} });
+    return numberOfDeletedTrips !== 0;
   }
+//erreur dans le code d'annulation
+
 
   async getLaunchIdsByUser() {
     // M qui renvoie tous les voyages réservés pour le user connecté (userId)

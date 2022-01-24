@@ -39,9 +39,10 @@ module.exports = {
                 return user;
             }
         },
-        //ce resolver prend une adresse e-mail et renvoie les données d'un utilisateur correspondant à notre Apiuser
+        //ce resolver prend une adresse e-mail et renvoie les données d'un utilisateur correspondant à notre APIuser
         //ajout d'un champ token à l'objet pour représenter la session active de l'utilisateur
-        //!! attention, cette méthode 'nest pas du tout sécurité et ne doit pas être utilisée pour les app de production
+        //!! attention, cette méthode n'est pas du tout sécurité et ne doit pas être utilisée pour les app de production
+
         bookTrips: async (_, {launchIds}, {dataSources}) => {
             const result = await dataSources.userAPI.bookTrips({launchIds});
             const launches = await dataSources.launchAPI.getLaunchByIds({
@@ -100,7 +101,7 @@ module.exports = {
             if (!launchIds.length) return [];
             // look up those launches by their ids
             return (
-                dataSources.launchAPI.getLaunchesByIds({
+                await dataSources.launchAPI.getLaunchByIds({
                     launchIds,
                 }) || []
             );

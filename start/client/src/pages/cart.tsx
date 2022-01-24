@@ -12,6 +12,7 @@ export const GET_CART_ITEMS = gql`
     cartItems @client
   }
 `;
+//@client à ajouter à chaque champs côté client = cela indique à Apollo de NE pas récupérer la valeur de ce champs sur notre serveur
 
 //RouteComponent Props contient tout les informations que nous attendons d'une route path, location, navigate, etc.
 interface CartProps extends RouteComponentProps {}

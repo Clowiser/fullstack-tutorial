@@ -72,4 +72,5 @@ const typeDefs = gql`
 `;
 
 //le type Query a trois type de champs launches, launch et me
+//le type TripUpdateResponse est lié avec le type mutation avec les bookTrips, les cancel Trip et le login
 module.exports = typeDefs;
