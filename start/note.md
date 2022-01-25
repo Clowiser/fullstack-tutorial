@@ -204,7 +204,7 @@ Tout comme sur le serveur, nous pouvons remplir les champs de schéma côté cli
 données provenant de n'importe quelle source souhaitée. AC fournit des options pour cela :
 - le même cache en mémoire ou les résultats des requêtes côté serveur sont stockées
 - variables réactives, qui peuvent stocker des données arbitraires en dehors du cache 
-tout en mettant à jour les requêtes qui en dépendent.
+tout en mettant à jour les requêtes qui en dépendent.(variable dans un cache)
 
 a - mettre à jour l'instruction d'import pour inclure la fonction makeVar
 - si on appelle une fonction de variable réactive avec 0 argument, elle renvoie la valeur actuelle de la var
@@ -240,6 +240,17 @@ stocker les lancements que les utilisateurs réservent
 ### 16 - activer la réservation de voyage
 Nous avons attendu pour intégrer cette fonctionnalité car elle nécessite d'intéragir avec les données locales (le panier et l'utilisateur) 
 et les données distantes.
+
+### ENV
+Dans les .env du client et server :
+client :
+- APOLLO_KEY=service:My-Graph-21qivo:U7g6mEUzREF7x5JRv9YbIw
+
+server :
+- APOLLO_KEY=service:My-Graph-21qivo:U7g6mEUzREF7x5JRv9YbIw 
+- APOLLO_GRAPH_REF=My-Graph-21qivo@current 
+- APOLLO_SCHEMA_REPORTING=true
+
 
 ###Rappel :
 .map() : créer un nouveau tableau avec les résultats de l'appel d'une fonction
